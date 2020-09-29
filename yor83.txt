@@ -1,0 +1,2 @@
+Total Slots : 25
+Avg Penalty for Random Heuristic 48.56
