@@ -1,7 +1,7 @@
 from collections import defaultdict
 from itertools import combinations
 import operator
-import numpy as np
+import numpy #eida barbar chole jay. chole gele pip install kora lagbe eikhner package e jaya
 class Graph:
     def __init__(self,v):
         self.graph=defaultdict(list)
@@ -65,11 +65,11 @@ class Graph:
             self.result[u]=cr
             for i in range(1,self.v+1):
                 available[i]=True
-        writer1=open("random.txt","w")
+        #writer1=open("random.txt","w")
         for u in range(1,self.v+1):
             print("Course {} ----> Slot {}".format(u,self.result[u]))
-            writer1.write("Course {} ----> Slot {} ".format(u,self.result[u]))
-            writer1.write("\n")
+            #writer1.write("Course {} ----> Slot {} ".format(u,self.result[u]))
+            #writer1.write("\n")
         #print("Total Slots {}".format(max(self.result)))
     def greedycolouringlargest(self):
         for i in range(1,self.v+2):
@@ -91,12 +91,12 @@ class Graph:
             self.result[u]=cr
             for i in range(1,self.v+1):
                 available[i]=True
-        writer1=open("largest.txt","w")
-        writer2 = open("largestslot.txt", "w")
+        #writer1=open("largest.txt","w")
+        #writer2 = open("largestslot.txt", "w")
         for u in range(1,self.v+1):
             print("Course {} ----> Slot {}".format(u,self.result[u]))
-            writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
-            writer1.write("\n")
+            #writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
+            #writer1.write("\n")
         f = open("student_taken_courses.txt")
         l = 0
         #slots = []
@@ -112,12 +112,13 @@ class Graph:
                 self.penaltylargest[l].append(i)
             #for k, v in self.penaltylargest.items():
                 #print("Roll {} Slot : {}".format(k, v))
-            writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
-            writer2.write("\n")
+            #writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
+            #writer2.write("\n")
 
             self.slot2.clear()
-        print("Total slots ", max(self.result))
-        writer1.write("Total slots {}".format(max(self.result)))
+        #print("Total slots ", max(self.result))
+        return max(self.result)
+        #writer1.write("Total slots {}".format(max(self.result)))
     def largeenrollment(self):
         file=open("course_enrollment.txt")
         for line in file:
@@ -149,12 +150,12 @@ class Graph:
             self.result[u]=cr
             for i in range(1,self.v+1):
                 available[i]=True
-        writer1=open("largeenroll.txt","w")
-        writer2 = open("largeenrollstslot.txt", "w")
+        #writer1=open("largeenroll.txt","w")
+        #writer2 = open("largeenrollstslot.txt", "w")
         for u in range(1,self.v+1):
             print("Course {} ----> Slot {}".format(u,self.result[u]))
-            writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
-            writer1.write("\n")
+            #writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
+            #writer1.write("\n")
         f = open("student_taken_courses.txt")
         l = 0
         #slots = []
@@ -170,14 +171,14 @@ class Graph:
                 self.penaltyenrollment[l].append(i)
             #for k, v in self.penaltylargest.items():
                 #print("Roll {} Slot : {}".format(k, v))
-            writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
-            writer2.write("\n")
+            #writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
+            #writer2.write("\n")
 
             self.slot2.clear()
-        print("Total slots ", max(self.result))
-        writer1.write("Total slots {}".format(max(self.result)))
+        #print("Total slots ", max(self.result))
+        return max(self.result)
+        #writer1.write("Total slots {}".format(max(self.result)))
     def routine(self):
-        writer1 = open("randomslot.txt", "w")
         f=open("student_taken_courses.txt")
         l=0
         #slots=[]
@@ -194,11 +195,12 @@ class Graph:
                 self.penaltyrandom[l].append(i)
             #for k,v in self.penaltyrandom.items():
                 #print("Roll {} Slot : {}".format(k,v))
-            writer1.write("Roll {} Slots : {} ".format(l,sorted(self.slot1)))
-            writer1.write("\n")
+            #writer1.write("Roll {} Slots : {} ".format(l,sorted(self.slot1)))
+            #writer1.write("\n")
 
             self.slot1.clear()
-        print("Total slots ",max(self.result))
+        #print("Total slots ",max(self.result))
+        return max(self.result)
     def penaltyran(self):
         penrad=[]
         a=0
@@ -227,7 +229,8 @@ class Graph:
                     penin=penin+0
             penalty=penalty+penin
         penalty=penalty/941
-        print("Avg Penalty for random {:.2f}".format(penalty))
+        return penalty
+        #print("Avg Penalty for random {:.2f}".format(penalty))
     def penaltylarge(self):
         penrad=[]
         a=0
@@ -256,7 +259,8 @@ class Graph:
                     penin=penin+0
             penalty=penalty+penin
         penalty=penalty/941
-        print("Avg Penalty for largest {:.2f}".format(penalty))
+        return penalty
+        #print("Avg Penalty for largest {:.2f}".format(penalty))
     def penaltylargeenroll(self):
         penrad=[]
         a=0
@@ -285,7 +289,8 @@ class Graph:
                     penin=penin+0
             penalty=penalty+penin
         penalty=penalty/941
-        print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
+        return penalty
+        #print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
 
 
 g1=Graph(181)
@@ -303,19 +308,32 @@ for line in f:
 #g1.courses()
 print("1. Random 2. Largest  3.Largeenrollment")
 x=int(input("Enter number : "))
+file=open("yor83.txt","w")
 if(x==1):
     g1.greedycolouringrandom()
-    g1.routine()
+    slot=g1.routine()
     g1.edgecount()
-    g1.penaltyran()
+    penalty=g1.penaltyran()
+    file.write("Total Slots : {}".format(slot))
+    file.write('\n')
+    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
+    print("Total Slots {} and Avg Penalty {:.2f}".format(slot,penalty))
 if(x==2):
     g1.edgecount()
-    g1.greedycolouringlargest()
+    slot=g1.greedycolouringlargest()
     #g1.routine()
-    g1.penaltylarge()
+    penalty=g1.penaltylarge()
+    file.write("Total Slots : {}".format(slot))
+    file.write('\n')
+    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
+    print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
 if(x==3):
     g1.largeenrollment()
-    g1.greedycolouringlargeenrollment()
-    g1.penaltylargeenroll()
+    slot=g1.greedycolouringlargeenrollment()
+    penalty=g1.penaltylargeenroll()
+    file.write("Total Slots : {}".format(slot))
+    file.write('\n')
+    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
+    print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
 
 
