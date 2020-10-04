@@ -1,7 +1,7 @@
 from collections import defaultdict
 from itertools import combinations
 import operator
-import numpy #eida barbar chole jay. chole gele pip install kora lagbe eikhner package e jaya
+import numpy as np #eida barbar chole jay. chole gele pip install kora lagbe eikhner package e jaya
 class Graph:
     def __init__(self,v):
         self.graph=defaultdict(list)
@@ -16,6 +16,7 @@ class Graph:
         self.maxedge=[]
         self.enrollment=dict()
         self.enrollmentlist=[]
+        self.slotcourse=defaultdict(list)
     def search(self,l,v):
         for i in l:
             if(i==v):
@@ -68,6 +69,19 @@ class Graph:
         #writer1=open("random.txt","w")
         for u in range(1,self.v+1):
             print("Course {} ----> Slot {}".format(u,self.result[u]))
+        values=np.array(self.result)
+        new_result=self.result.copy()
+        for p in new_result:
+            if(p==-1):
+                continue
+            ind=[i for i,x in enumerate(new_result)if x==p]
+            for x in ind:
+                self.slotcourse[p].append(x)
+            for x in ind:
+                new_result[x]=-1
+            ind.clear()
+        for k,v in self.slotcourse.items():
+            print("Slot : {}  Courses: {}".format(k,v))
             #writer1.write("Course {} ----> Slot {} ".format(u,self.result[u]))
             #writer1.write("\n")
         #print("Total Slots {}".format(max(self.result)))
