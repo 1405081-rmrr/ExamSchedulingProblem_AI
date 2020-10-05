@@ -1,16 +1,16 @@
 from collections import defaultdict
 from itertools import combinations
 import operator
-import random
-import numpy as np #eida barbar chole jay. chole gele pip install kora lagbe eikhner package e jaya
+import numpy #eida barbar chole jay. chole gele pip install kora lagbe eikhner package e jaya
 class Graph:
-    def __init__(self,v,s):
+    def __init__(self,v):
         self.graph=defaultdict(list)
         self.v=v
-        self.s=s
+        self.l=0
         self.result=[]
         self.slot1=[]
         self.slot2=[]
+        self.slot3=[]
         self.penaltyrandom=defaultdict(list)
         self.penaltylargest=defaultdict(list)
         self.penaltyenrollment=defaultdict(list)
@@ -18,8 +18,6 @@ class Graph:
         self.maxedge=[]
         self.enrollment=dict()
         self.enrollmentlist=[]
-        self.slotcourse=defaultdict(list)
-        self.bfslist=[]
     def search(self,l,v):
         for i in l:
             if(i==v):
@@ -72,57 +70,9 @@ class Graph:
         #writer1=open("random.txt","w")
         #for u in range(1,self.v+1):
             #print("Course {} ----> Slot {}".format(u,self.result[u]))
-        new_result=self.result.copy()
-        for p in new_result:
-            if(p==-1):
-                continue
-            ind=[i for i,x in enumerate(new_result)if x==p]
-            for x in ind:
-                self.slotcourse[p].append(x)
-            for x in ind:
-                new_result[x]=-1
-            ind.clear()
-        #for k in self.slotcourse.keys():
-            #print("Length of {} is {}".format(k,len(self.slotcourse.get(k))))
-        #for k,v in self.slotcourse.items():
-            #if(k==3 or k==6):
-                #print("{} {}".format(k,v))
             #writer1.write("Course {} ----> Slot {} ".format(u,self.result[u]))
             #writer1.write("\n")
         #print("Total Slots {}".format(max(self.result)))
-
-    def BFS(self, s):
-
-        # Mark all the vertices as not visited
-        visited=[]
-        for i in range(1,self.v+2):
-            visited.append(False)
-
-        # Create a queue for BFS
-        queue = []
-
-        # Mark the source node as
-        # visited and enqueue it
-        queue.append(s)
-        visited[s] = True
-        y = random.randint(1, max(self.result))
-        while queue:
-            # Dequeue a vertex from
-            # queue and print it
-            p = queue.pop(0)
-            #print(s, end=" ")
-            self.bfslist.append(p)
-            for i in self.graph[p]:
-                if (visited[i] == False and (self.result[i]==self.result[s] or self.result[i]==y)):
-                    queue.append(i)
-                    visited[i] = True
-        for i in self.bfslist:
-            if(self.result[i]==self.result[s]):
-                self.result[i]=y
-            elif (self.result[i] == y):
-                self.result[i] = self.result[s]
-        for u in range(1,self.v+1):
-            print("Course {} ----> Slot {}".format(u,self.result[u]))
     def greedycolouringlargest(self):
         for i in range(1,self.v+2):
             self.result.append(-1)
@@ -145,31 +95,31 @@ class Graph:
                 available[i]=True
         #writer1=open("largest.txt","w")
         #writer2 = open("largestslot.txt", "w")
-        x=random.randint(1,self.v)
-        #self.BFS(x)
         #for u in range(1,self.v+1):
             #print("Course {} ----> Slot {}".format(u,self.result[u]))
             #writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
             #writer1.write("\n")
         f = open("student_taken_courses.txt")
-        l = 0
         #slots = []
         for line in f:
-            l = l + 1
+            self.l = self.l + 1
             x = line.split()
             for i in range(len(x)):
                 x[i] = int(x[i])
             for i in x:
-                self.slot2.append(self.result[i])
+                self.slot3.append(self.result[i])
+            flag = len(set(self.slot3)) == len(self.slot3)
+            if (flag == 0):
+                print("INVALID")
             #print("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
-            for i in sorted(self.slot2):
-                self.penaltylargest[l].append(i)
+            for i in sorted(self.slot3):
+                self.penaltylargest[self.l].append(i)
             #for k, v in self.penaltylargest.items():
                 #print("Roll {} Slot : {}".format(k, v))
             #writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
             #writer2.write("\n")
 
-            self.slot2.clear()
+            self.slot3.clear()
         #print("Total slots ", max(self.result))
         return max(self.result)
         #writer1.write("Total slots {}".format(max(self.result)))
@@ -206,25 +156,25 @@ class Graph:
                 available[i]=True
         #writer1=open("largeenroll.txt","w")
         #writer2 = open("largeenrollstslot.txt", "w")
-        x=random.randint(1,self.v)
-        #self.BFS(x)
         #for u in range(1,self.v+1):
             #print("Course {} ----> Slot {}".format(u,self.result[u]))
             #writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
             #writer1.write("\n")
         f = open("student_taken_courses.txt")
-        l = 0
         #slots = []
         for line in f:
-            l = l + 1
+            self.l = self.l + 1
             x = line.split()
             for i in range(len(x)):
                 x[i] = int(x[i])
             for i in x:
                 self.slot2.append(self.result[i])
+            flag = len(set(self.slot2)) == len(self.slot2)
+            if (flag == 0):
+                print("INVALID")
             #print("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
             for i in sorted(self.slot2):
-                self.penaltyenrollment[l].append(i)
+                self.penaltyenrollment[self.l].append(i)
             #for k, v in self.penaltylargest.items():
                 #print("Roll {} Slot : {}".format(k, v))
             #writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
@@ -235,13 +185,10 @@ class Graph:
         return max(self.result)
         #writer1.write("Total slots {}".format(max(self.result)))
     def routine(self):
-        x = random.randint(1, self.v)
-        #self.BFS(x)
         f=open("student_taken_courses.txt")
-        l=0
         #slots=[]
         for line in f:
-            l=l+1
+            self.l=self.l+1
             x=line.split()
             for i in range(len(x)):
                 x[i]=int(x[i])
@@ -249,8 +196,11 @@ class Graph:
                 self.slot1.append(self.result[i])
            #print("Roll {} Slots : {} ".format(l,sorted(slots)))
             #print("Roll {} Slots : {} ".format(l,sorted(self.slot1)))
+            flag = len(set(self.slot1)) == len(self.slot1)
+            if(flag==0):
+                print("INVALID")
             for i in sorted(self.slot1):
-                self.penaltyrandom[l].append(i)
+                self.penaltyrandom[self.l].append(i)
             #for k,v in self.penaltyrandom.items():
                 #print("Roll {} Slot : {}".format(k,v))
             #writer1.write("Roll {} Slots : {} ".format(l,sorted(self.slot1)))
@@ -286,7 +236,7 @@ class Graph:
                 elif(r>=6):
                     penin=penin+0
             penalty=penalty+penin
-        penalty=penalty/self.s
+        penalty=penalty/self.l
         return penalty
         #print("Avg Penalty for random {:.2f}".format(penalty))
     def penaltylarge(self):
@@ -316,7 +266,7 @@ class Graph:
                 elif(r>=6):
                     penin=penin+0
             penalty=penalty+penin
-        penalty=penalty/self.s
+        penalty=penalty/self.l
         return penalty
         #print("Avg Penalty for largest {:.2f}".format(penalty))
     def penaltylargeenroll(self):
@@ -346,25 +296,17 @@ class Graph:
                 elif(r>=6):
                     penin=penin+0
             penalty=penalty+penin
-        penalty=penalty/self.s
+        penalty=penalty/self.l
         return penalty
         #print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
 
-
-#g1=Graph(181)
+course=[]
 f=open("student_taken_courses.txt")
-file=open("course_enrollment.txt","r")
-courselist=[]
-studentlist=[]
+file=open("course_enrollment.txt")
 for line in file:
     x=line.split()
-    courselist.append(int(x[0]))
-    studentlist.append(int(x[1]))
-vertex=max(courselist)
-student=sum(studentlist)
-g1=Graph(vertex,student)
-
-c=0
+    course.append(int(x[0]))
+g1=Graph(max(course))
 for line in f:
     x=line.split()
     for i in range(len(x)):
@@ -374,36 +316,25 @@ for line in f:
         p=i[0]
         q=i[1]
         g1.addEdge(p,q)
-#g1.courses()
+
 print("1. Random 2. Largest  3.Largeenrollment")
 x=int(input("Enter number : "))
-file=open("yor83.txt","w")
 if(x==1):
     g1.greedycolouringrandom()
-    #slot=g1.routine()
-    slot = g1.routine()
+    slot=g1.routine()
+    g1.edgecount()
     penalty=g1.penaltyran()
-    #g1.BFS(1)
-    file.write("Total Slots : {}".format(slot))
-    file.write('\n')
-    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
     print("Total Slots {} and Avg Penalty {:.2f}".format(slot,penalty))
 if(x==2):
     g1.edgecount()
     slot=g1.greedycolouringlargest()
     #g1.routine()
     penalty=g1.penaltylarge()
-    file.write("Total Slots : {}".format(slot))
-    file.write('\n')
-    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
     print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
 if(x==3):
     g1.largeenrollment()
     slot=g1.greedycolouringlargeenrollment()
     penalty=g1.penaltylargeenroll()
-    file.write("Total Slots : {}".format(slot))
-    file.write('\n')
-    file.write("Avg Penalty for Random Heuristic {:.2f}".format(penalty))
     print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
 
 
