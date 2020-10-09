@@ -299,10 +299,24 @@ class Graph:
         penalty=penalty/self.l
         return penalty
         #print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
-
+    def student(self):
+        return self.l
+    def clear(self):
+        self.result.clear()
+        self.slot1.clear()
+        self.slot2.clear()
+        self.penaltyrandom.clear()
+        self.penaltylargest.clear()
+        self.penaltyenrollment.clear()
+        self.edge.clear()
+        self.maxedge.clear()
+        self.enrollment.clear()
+        self.enrollmentlist.clear()
+        self.l=0
 course=[]
 f=open("student_taken_courses.txt")
 file=open("course_enrollment.txt")
+write=open("CAR91.txt","w")
 for line in file:
     x=line.split()
     course.append(int(x[0]))
@@ -316,25 +330,36 @@ for line in f:
         p=i[0]
         q=i[1]
         g1.addEdge(p,q)
+g1.greedycolouringrandom()
+slot = g1.routine()
+g1.edgecount()
+penalty = g1.penaltyran()
+x=g1.student()
+print("Total student {}".format(x))
+write.write("Total student {}".format(x))
+write.write('\n')
+print("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write('\n')
+g1.clear()
 
-print("1. Random 2. Largest  3.Largeenrollment")
-x=int(input("Enter number : "))
-if(x==1):
-    g1.greedycolouringrandom()
-    slot=g1.routine()
-    g1.edgecount()
-    penalty=g1.penaltyran()
-    print("Total Slots {} and Avg Penalty {:.2f}".format(slot,penalty))
-if(x==2):
-    g1.edgecount()
-    slot=g1.greedycolouringlargest()
-    #g1.routine()
-    penalty=g1.penaltylarge()
-    print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
-if(x==3):
-    g1.largeenrollment()
-    slot=g1.greedycolouringlargeenrollment()
-    penalty=g1.penaltylargeenroll()
-    print("Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+g1.edgecount()
+slot = g1.greedycolouringlargest()
+# g1.routine()
+penalty = g1.penaltylarge()
+print("Largest Edge : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write("Largest Edge : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write('\n')
+g1.clear()
+
+
+g1.largeenrollment()
+slot = g1.greedycolouringlargeenrollment()
+penalty = g1.penaltylargeenroll()
+print("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+write.write('\n')
+g1.clear()
+
 
 
