@@ -154,12 +154,13 @@ class Graph:
             self.result[u]=cr
             for i in range(1,self.v+1):
                 available[i]=True
-        x = input("Kempe Chain ?\n")
+        """x = input("Kempe Chain ?\n")
         if (x == 'Y' or x == 'y'):
-            self.BFS(100)
+            self.BFS(450)
         elif (x == 'N' or x == 'n'):
             pass
-        f = open("student_taken_courses.txt")
+            """
+        """f = open("student_taken_courses.txt")
         #slots = []
         for line in f:
             self.l = self.l + 1
@@ -178,6 +179,29 @@ class Graph:
                 #print("Roll {} Slot : {}".format(k, v))
             #writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
             #writer2.write("\n")
+
+            self.slot2.clear()
+        return max(self.result)
+        """
+    def routine1(self):
+        f = open("student_taken_courses.txt")
+        for line in f:
+            self.l = self.l + 1
+            x = line.split()
+            for i in range(len(x)):
+                x[i] = int(x[i])
+            for i in x:
+                self.slot2.append(self.result[i])
+            flag = len(set(self.slot1)) == len(self.slot1)
+            if (flag == 0):
+                print("INVALID")
+            # print("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
+            for i in sorted(self.slot2):
+                self.penaltyenrollment[self.l].append(i)
+            # for k, v in self.penaltylargest.items():
+            # print("Roll {} Slot : {}".format(k, v))
+            # writer2.write("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
+            # writer2.write("\n")
 
             self.slot2.clear()
         return max(self.result)
@@ -298,8 +322,11 @@ class Graph:
         #print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
     def student(self):
         return self.l
-
-    def BFS(self, s):
+    def course(self):
+        return self.v
+    def courseslot(self):
+        return self.result
+    def Kempe(self, s,clr,ran):
         visited=[]
         for i in range(1,self.v+2):
             visited.append(False)
@@ -311,14 +338,14 @@ class Graph:
             p = queue.pop(0)
             #print(s, end=" ")
             for i in self.graph[p]:
-                if (visited[i] == False and (self.result[i]==self.result[s] or self.result[i]==25)):
+                if (visited[i] == False and (self.result[i]==clr or self.result[i]==ran)):
                     queue.append(i)
                     visited[i] = True
         for i in range(1,self.v+1):
-            if(self.result[i]==self.result[s]):
-                self.result[i]=25
-            elif(self.result[i]==25):
-                self.result[i]=self.result[s]
+            if(self.result[i]==clr):
+                self.result[i]=ran
+            elif(self.result[i]==ran):
+                self.result[i]=clr
 
 
     def clear(self):
@@ -336,7 +363,7 @@ class Graph:
 course=[]
 f=open("student_taken_courses.txt")
 file=open("course_enrollment.txt")
-write=open("CAR-F-92.txt","w")
+write=open("YOR83.txt","w")
 for line in file:
     x=line.split()
     course.append(int(x[0]))
@@ -351,15 +378,16 @@ for line in f:
         q=i[1]
         g1.addEdge(p,q)
 g1.greedycolouringrandom()
-slot = g1.routine()
-g1.edgecount()
-penalty = g1.penaltyran()
+slot1 = g1.routine()
+#g1.edgecount()
+penalty1 = g1.penaltyran()
 x=g1.student()
-print("Total student {}".format(x))
+c=g1.course()
+print("Total student {} Total Course {}".format(x,c))
 write.write("Total student {}".format(x))
 write.write('\n')
-print("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
-write.write("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+print("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot1, penalty1))
+write.write("Random Heuristic : Total Slots {} and Avg Penalty {:.2f}".format(slot1, penalty1))
 write.write('\n')
 g1.clear()
 
@@ -374,10 +402,26 @@ g1.clear()
 
 
 g1.largeenrollment()
-slot = g1.greedycolouringlargeenrollment()
-penalty = g1.penaltylargeenroll()
-print("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
-write.write("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
+g1.greedycolouringlargeenrollment()
+slot3=g1.routine1()
+penalty3 = g1.penaltylargeenroll()
+print("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot3, penalty3))
+write.write("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot3, penalty3))
 write.write('\n')
 g1.clear()
+
+g1.largeenrollment()
+g1.greedycolouringrandom()
+courseslot=g1.courseslot()
+p=[]
+for i in range(1,c):
+    for j in courseslot:
+        if j==-1:
+            continue
+        g1.Kempe(i,courseslot[i],j)
+        slot=g1.routine1()
+        penalty=g1.penaltylargeenroll()
+        print(penalty)
+        p.append(penalty)
+print(sorted(p))
 
