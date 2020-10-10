@@ -154,12 +154,11 @@ class Graph:
             self.result[u]=cr
             for i in range(1,self.v+1):
                 available[i]=True
-        #writer1=open("largeenroll.txt","w")
-        #writer2 = open("largeenrollstslot.txt", "w")
-        #for u in range(1,self.v+1):
-            #print("Course {} ----> Slot {}".format(u,self.result[u]))
-            #writer1.write("Course {} ----> Slot {}".format(u,self.result[u]))
-            #writer1.write("\n")
+        x = input("Kempe Chain ?\n")
+        if (x == 'Y' or x == 'y'):
+            self.BFS(100)
+        elif (x == 'N' or x == 'n'):
+            pass
         f = open("student_taken_courses.txt")
         #slots = []
         for line in f:
@@ -169,7 +168,7 @@ class Graph:
                 x[i] = int(x[i])
             for i in x:
                 self.slot2.append(self.result[i])
-            flag = len(set(self.slot2)) == len(self.slot2)
+            flag = len(set(self.slot1)) == len(self.slot1)
             if (flag == 0):
                 print("INVALID")
             #print("Roll {} Slots : {} ".format(l,sorted(self.slot2)))
@@ -181,9 +180,7 @@ class Graph:
             #writer2.write("\n")
 
             self.slot2.clear()
-        #print("Total slots ", max(self.result))
         return max(self.result)
-        #writer1.write("Total slots {}".format(max(self.result)))
     def routine(self):
         f=open("student_taken_courses.txt")
         #slots=[]
@@ -301,6 +298,29 @@ class Graph:
         #print("Avg Penalty for largest Enrollment {:.2f}".format(penalty))
     def student(self):
         return self.l
+
+    def BFS(self, s):
+        visited=[]
+        for i in range(1,self.v+2):
+            visited.append(False)
+        queue = []
+        queue.append(s)
+        visited[s] = True
+
+        while queue:
+            p = queue.pop(0)
+            #print(s, end=" ")
+            for i in self.graph[p]:
+                if (visited[i] == False and (self.result[i]==self.result[s] or self.result[i]==25)):
+                    queue.append(i)
+                    visited[i] = True
+        for i in range(1,self.v+1):
+            if(self.result[i]==self.result[s]):
+                self.result[i]=25
+            elif(self.result[i]==25):
+                self.result[i]=self.result[s]
+
+
     def clear(self):
         self.result.clear()
         self.slot1.clear()
@@ -316,7 +336,7 @@ class Graph:
 course=[]
 f=open("student_taken_courses.txt")
 file=open("course_enrollment.txt")
-write=open("CAR91.txt","w")
+write=open("CAR-F-92.txt","w")
 for line in file:
     x=line.split()
     course.append(int(x[0]))
@@ -360,6 +380,4 @@ print("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, 
 write.write("Largest Enrollment : Total Slots {} and Avg Penalty {:.2f}".format(slot, penalty))
 write.write('\n')
 g1.clear()
-
-
 
