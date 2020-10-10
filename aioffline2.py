@@ -413,7 +413,6 @@ g1.clear()
 g1.largeenrollment()
 g1.greedycolouringrandom()
 courseslot=g1.courseslot()
-p=[]
 for i in range(1,c):
     for j in courseslot:
         if j==-1:
@@ -422,6 +421,3 @@ for i in range(1,c):
         slot=g1.routine1()
         penalty=g1.penaltylargeenroll()
         print(penalty)
-        p.append(penalty)
-print(sorted(p))
-
